@@ -1,29 +1,15 @@
-Heading
+L1 Tracker
  =======
 
- Sub-heading
+Packages
  -----------
  
- Paragraphs are separated
- by a blank line.
- 
- Text attributes *italic*,
- **bold**, `monospace`.
- 
- A [link](http://example.com).
- <<<   No space between ] and (  >>>
+1. Python
+2. OpenCV
+3.  C Compiler
 
- Shopping list:
+Usage
+----------
  
-   * apples
-   * oranges
-   * pears
+ 1. Make the c files `make`.
  
- Numbered list:
- 
-   1. apples
-   2. oranges
-   3. pears
- 
- The rain---not the reign---in
- Spain.
