@@ -1,21 +1,29 @@
-L1TrackerPython
-===============
-PACKAGES NEEDED
--------------------------
+Heading
+ =======
 
-1. python 
-2. OpenCV
-3. C++
+ Sub-heading
+ -----------
  
-USAGE
--------------------------
-Step1: Make the .c files.
-	make
+ Paragraphs are separated
+ by a blank line.
+ 
+ Text attributes *italic*,
+ **bold**, `monospace`.
+ 
+ A [link](http://example.com).
+ <<<   No space between ] and (  >>>
 
-Make the .c files
-
-Needs OpenCV - 2.4.2 
-
-Two Main files 1) main.py - Takes input from Images
-    	       2) mainWebcam.py - Takes Input from Webcam
-
+ Shopping list:
+ 
+   * apples
+   * oranges
+   * pears
+ 
+ Numbered list:
+ 
+   1. apples
+   2. oranges
+   3. pears
+ 
+ The rain---not the reign---in
+ Spain.
