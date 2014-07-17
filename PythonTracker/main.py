@@ -6,7 +6,7 @@ import cv2
 import matplotlib.cm as cm
 import matplotlib
 import numpy as np
-
+import os
 
 def tellme(s):
 	print(s)
@@ -31,12 +31,15 @@ class para():
 		self.angle_threshold = 50
 		self.Lip = 8 ;
 		self.Maxit = 5 ; 
-		self.nT = 30; # number of templates for the sparse representation
+		self.nT = 10; # number of templates for the sparse representation
 		self.rel_std_afnv =  MA([[0.005,0.003,0.005,0.003,1,1]]) ; # diviation of the sampling of particle filter
-		self.n_sample = 600; # No of particles
+		self.n_sample = 100; # No of particles
 		self.sz_T = MA([[12,15]]); # Reshape each image so that they have the same image space representation
-		self.init_pos = MA([[int(pts[0,1]),int(pts[1,1]),int(pts[2,1])],[int(pts[0,0]),int(pts[1,0]),int(pts[2,0])]])
+		self.init_pos = MA([[int(pts[0,1]),int(pts[1,1]),int(pts[3,1])],[int(pts[0,0]),int(pts[1,0]),int(pts[3,0])]])
 		self.path = '/home/ankush/Desktop/CleanCode/PythonTracker/Videos/nl_bookII_s3/frame'
+		self.results  = 'ResultTracking'
+		if not os.path.exists(self.results):
+			os.makedirs(self.results)
 #		self.bDebug = 0; # debugging indicator
 #		self.bShowSaveImag = 1 ; # indicator for result image show and save after tracking finished
 def main():

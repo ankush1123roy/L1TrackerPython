@@ -69,7 +69,7 @@ def L1TrackingBPR_APGup(paraT):
 		img1 = cv2.imread(filename);
 		#		f,img1 = Movie.read() # After some minutes all frames returnes are empty and f is false
 		t = t+1;
-		print 'Frame number: (%f) \n'% (t);
+		#print 'Frame number: (%f) \n'% (t);
 		r1, g1, b1 = img1[:,:,0], img1[:,:,1], img1[:,:,2]
 		img = 0.2989*r1 + 0.5870 * g1 + 0.1140 * b1;
 		# Draw transformation samples from a Gaussian distribution
@@ -120,9 +120,7 @@ def L1TrackingBPR_APGup(paraT):
 			D_s = numpy.multiply(D_s,D_s); #reconstruction error
 			p[indq[n]] = numpy.exp(-alpha*(numpy.sum(D_s))); #  probability w.r.t samples
 			tau = tau + p[indq[n]]/(2*n_sample-1);# update the threshold
-			if(numpy.sum(c[1:nT]) < 0): # remove the inverse intensity patterns
-				continue;
-			elif (p[indq[n]]>eta_max): #******POssilbe Erro*****
+			if (p[indq[n]]>eta_max): #******POssilbe Erro*****
 				id_max	= indq[n];
 				c_max	= c;
 				eta_max = p[indq[n]]
@@ -183,25 +181,15 @@ def L1TrackingBPR_APGup(paraT):
 			param.Lambda = Initialparameterlambda;
 		rect = numpy.rint(aff2image(map_aff.T, sz_T));
 		inp	= (numpy.reshape(rect,(4,2))).T;
-		
-		#import pdb;pdb.set_trace()
-		#topleft_r = inp[0,0];
-		#topleft_c = inp[1,0];
-		#botleft_r = inp[0,1];
-		#botleft_c = inp[1,1];
-		#topright_r = inp[0,2];
-		#topright_c = inp[1,2];
-		#botright_r = inp[0,3];
-		#botright_c = inp[1,3];
 		position = MA([[int(inp[1,0]),int(inp[0,0]),int(inp[1,3]-inp[1,0]),int(inp[0,3]-inp[0,0])]]);
-		fdata = open("ResultTracking/L1.txt", "a")
+		fdata = open(paraT.results + "/L1.txt", "a")
 		fdata.write( str(position) +"\n" )      # str() converts to string
 		img = numpy.rint(img);
 		point1 = (int(inp[1,0]),int(inp[0,0]));
 		point2 =  (int(inp[1,2]),int(inp[0,2]));
 		point3 = (int(inp[1,3]),int(inp[0,3]));
 		point4 = (int(inp[1,1]),int(inp[0,1]));
-		print time.time() - start_time
+		#print time.time() - start_time
 		#if not f:
 		#	break
 		try:
@@ -209,7 +197,10 @@ def L1TrackingBPR_APGup(paraT):
 			cv2.line(img1, point2, point3, (0,0,255), 2)
 			cv2.line(img1, point3, point4, (0,0,255), 2)
 			cv2.line(img1, point4, point1, (0,0,255), 2)
-			cv2.imwrite('ResultTracking/{0:05d}.jpg'.format(t),img1)
+			font = cv2.FONT_HERSHEY_SIMPLEX
+			cv2.putText(img1,seq,(15,15), font, 0.5,(255,0,0),2)
+			cv2.imshow('vis', img1)
+			#cv2.imwrite(paraT.results + '/{0:05d}.jpg'.format(t),img1)
 		except cv2.error as e:
 			print e # print error: (-206) Unrecognized or unsupported array type
 		k=cv2.waitKey(5)
