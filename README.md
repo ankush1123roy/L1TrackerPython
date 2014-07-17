@@ -17,3 +17,12 @@ Usage
 3. Set the path for the folder where the tracked images are to be stored `self.results =  `
 4. You can set other parameters for the particle filter in this main file
 5. If tracked images are to be saved uncomment `cv2.imwrite` in L1TrackingBPR_APGup.py
+
+Output
+---------
+
+Depending on the user settings
+
+1. An window showing tracked images
+2. A folder where the results are stored
+3. Results: Tracked images and Co - Ordinates
