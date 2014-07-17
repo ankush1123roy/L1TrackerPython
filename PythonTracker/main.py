@@ -15,7 +15,7 @@ def tellme(s):
 t = 0;
 #Movie = cv2.VideoCapture("Videos/RobotNewSetup.avi")
 #f,img = Movie.read()
-img= cv2.imread('/home/ankush/Desktop/CleanCode/PythonTracker/Videos/nl_bookII_s3/frame00001.jpg')
+img= cv2.imread('/home/ankush2/scrap/L1TrackerPython/Videos/nl_bookIII_s3/frame00001.jpg')
 plt.imshow(img)
 pts = [];
 while len(pts) < 4:
@@ -36,10 +36,11 @@ class para():
 		self.n_sample = 100; # No of particles
 		self.sz_T = MA([[12,15]]); # Reshape each image so that they have the same image space representation
 		self.init_pos = MA([[int(pts[0,1]),int(pts[1,1]),int(pts[3,1])],[int(pts[0,0]),int(pts[1,0]),int(pts[3,0])]])
-		self.path = '/home/ankush/Desktop/CleanCode/PythonTracker/Videos/nl_bookII_s3/frame'
+		self.path = '/home/ankush2/scrap/L1TrackerPython/Videos/nl_bookIII_s3/frame'
 		self.results  = 'ResultTracking'
 		if not os.path.exists(self.results):
 			os.makedirs(self.results)
+		self.noZeros = '5'
 #		self.bDebug = 0; # debugging indicator
 #		self.bShowSaveImag = 1 ; # indicator for result image show and save after tracking finished
 def main():

@@ -64,7 +64,7 @@ def L1TrackingBPR_APGup(paraT):
 	param = para1(paraT)
 	while t<nframes:
 		start_time= time.time();
-		seq = '%05d' % t	
+		seq = ('%0'+paraT.noZeros+ 'd') % t	
 		filename = paraT.path +str(seq)+'.jpg'
 		img1 = cv2.imread(filename);
 		#		f,img1 = Movie.read() # After some minutes all frames returnes are empty and f is false
