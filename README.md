@@ -1,5 +1,16 @@
 L1TrackerPython
 ===============
+PACKAGES NEEDED
+-------------------------
+
+1. python 
+2. OpenCV
+3. C++
+ 
+USAGE
+-------------------------
+Step1: Make the .c files.
+	make
 
 Make the .c files
 

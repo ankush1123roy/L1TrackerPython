@@ -3,7 +3,7 @@ import numpy
 import scipy.ndimage
 from numpy import matrix as MA
 from InitTemplates import InitTemplates
-from APGLASSOup import APGLASSOup
+#from APGLASSOup import APGLASSOup
 import time
 from numpy import linalg
 from corners2affine import corners2affine
@@ -12,7 +12,7 @@ from IMGaffine import IMGaffine_c
 import math
 from copy import deepcopy
 from softresh import softresh_c
-# from APGLASSOup import APGLASSOup_c
+from APGLASSOup import APGLASSOup_c # The faster version of APGLASSOup
 # Give RGB/BGR image as input to the tracking algo
 # Else check if RGB or gray and then convert it to gray
 # Input the name of the video to be tracked
@@ -23,34 +23,22 @@ def L1TrackingBPR_APGup(paraT):
 	framename = 'frameAPG';
 	dt2 = numpy.dtype('uint8');
 	dt3 = numpy.dtype('float64')
-	# paraT is a structure.
-	## Initialize templates T
-	# Generate T from single image
 	init_pos = paraT.init_pos;
 	n_sample=paraT.n_sample;
 	sz_T=paraT.sz_T;
 	rel_std_afnv = paraT.rel_std_afnv;
 	nT=paraT.nT;
 	t =1;
-	# generate the initial templates for the 1st frame. The image has to be in GrayScale
-	#Movie = cv2.VideoCapture("Videos/RobotNewSetup.avi")
-	#cv2.namedWindow("input")
-	#f,img = Movie.read()
 
-	img= cv2.imread('/home/ankush/Desktop/CleanCode/PythonTracker/Videos/BenchMark/Dudek/img/0001.jpg')
-#import pdb;pdb.set_trace()
-#	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY);
+	img= cv2.imread(paraT.path + '00001.jpg')
 	r1, g1, b1 = img[:,:,0], img[:,:,1], img[:,:,2]
 	img = 0.2989*r1 + 0.5870 * g1 + 0.1140 * b1;
 	img = MA(img);
 	(T,T_norm,T_mean,T_std) = InitTemplates(sz_T,nT,img,init_pos);
-	#print T.shape, T_norm.shape,T_mean.shape,T_std.shape
 	norms = numpy.multiply(T_norm,T_std); # %template norms
 	occlusionNf = 0;
 	# L1 function settings
 	angle_threshold = paraT.angle_threshold
-	#print sz_T.shape
-	# import pdb;pdb.set_trace()
 	dim_T	= sz_T[0,0]*sz_T[0,1];	# number of elements in one template, sz_T(1)*sz_T(2)=12x15 = 180
 	A = MA(numpy.concatenate((T,numpy.matrix(numpy.identity(dim_T))),axis = 1)) # data matrix is composed of T, positive trivial T.
 	alpha = 50;# this parameter is used in the calculation of the likelihood of particle filter
@@ -64,10 +52,10 @@ def L1TrackingBPR_APGup(paraT):
 	Dict = numpy.dot(Temp.T,Temp);
 	temp1 = numpy.concatenate((T,fixT),axis=1);
 	Temp1 = temp1*numpy.linalg.pinv(temp1);
-# % Tracking
+# Tracking
 
 # % initialization
-# nframes = no of frames to be tracked
+
 	nframes = 1940; # pass this as an argument or keyboard interrupt
 	temp1 = numpy.concatenate((A,fixT),axis = 1); 
 	colDim = MA(temp1.shape).item(1)
@@ -76,8 +64,8 @@ def L1TrackingBPR_APGup(paraT):
 	param = para1(paraT)
 	while t<nframes:
 		start_time= time.time();
-		seq = '%04d' % t	
-		filename = '/home/ankush/Desktop/CleanCode/PythonTracker/Videos/BenchMark/Dudek/img/'+str(seq)+'.jpg'
+		seq = '%05d' % t	
+		filename = paraT.path +str(seq)+'.jpg'
 		img1 = cv2.imread(filename);
 		#		f,img1 = Movie.read() # After some minutes all frames returnes are empty and f is false
 		t = t+1;
@@ -123,8 +111,8 @@ def L1TrackingBPR_APGup(paraT):
 		tau = 0;
 		while (n<n_sample) and (q[n]>=tau):
 			APG_arg1 = (Temp.T*Y[:,indq[n]])
-			(c) = APGLASSOup(APG_arg1,Dict,param);
-#			(c) = APGLASSOup_c(APG_arg1,Dict,param.Lambda, param.Lip, param.Maxit, param.nT)
+			#(c) = APGLASSOup(APG_arg1,Dict,param);
+			(c) = APGLASSOup_c(APG_arg1,Dict,param.Lambda, param.Lip, param.Maxit, param.nT)
 			c = MA(c);
 			Ele1=numpy.concatenate((A[:,0:nT], fixT),axis = 1);
 			Ele2=numpy.concatenate((c[0:nT], c[-1]), axis =0 );
